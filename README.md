@@ -1,5 +1,5 @@
 # IMDB project.
-May 2017
+March 2017
 
 ### *The first successful collaboration between [Yilin Ning](https://github.com/nyilin), Ying Chen and [Ginny Li](https://github.com/ginnyintifa).* 
 
