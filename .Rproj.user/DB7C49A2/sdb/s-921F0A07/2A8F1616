@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "library(grid)\nmovies <- read.csv(\"www/movie_score.csv\", header = TRUE, \n                   stringsAsFactors = FALSE, \n                   na.strings = c(\"\\\\N\", \"\", \" \", \"NA\"))[, -1]\nactors <- read.csv(\"www/actor_score.csv\", header = TRUE, \n                   stringsAsFactors = FALSE)[, -1]\nedges <- read.csv(\"www/edges_movies.csv\", header = TRUE)\n\n# Make heatmap for movie scores ----\nval <- movies[, c(9:22)]\nassignScore <- function(z, theta, startFrom = 1) {\n  theta <- sort(theta)\n  sapply(z,\n         function(z) {\n           J <- length(theta) + 1\n           if (z <= theta[1]) {\n             1\n           } else if (z > theta[J - 1]) {\n             J\n           } else {\n             for (j in 2:(J - 1)) {\n               if ((z > theta[j - 1]) & (z <= theta[j])) {\n                 return(j)\n               }\n             }\n           }\n         }) - 1 + startFrom\n}\nsetColor <- function(x, breaks, col = \"darkorange\") {\n  colVec <- colorRampPalette(c(\"seashell\", col))(length(breaks) + 1)\n  colVec[assignScore(z = x, theta = breaks)]\n}\nbreaksMat <- cbind(1:9, \n                   (1:9) * 1, \n                   (1:9) * 0.5, \n                   (1:9) * 10, \n                   (1:9) * 10, \n                   (1:9) * 10, \n                   (1:9) * 30, \n                   (1:9) * 5,\n                   (1:9) * 5000, \n                   (1:9) * 27,\n                   (1:9) * 5, \n                   (1:9) * 20,\n                   (1:9) * 5, \n                   (1:9) * 0.1)\ncolMat <- sapply(1:ncol(val), function(j) {\n  if (j == ncol(val)) {\n    # col <- \"steelblue\"\n    col = \"blue\"\n  } else {\n    # col <- \"darkorange\"\n    col <- \"red\"\n  }\n  setColor(x = val[, j], breaks = breaksMat[, j], col = col)\n})\ncolMatOrder <- colMat[sort.list(val$overall.rating, decreasing = TRUE), ]\ncolnames(colMatOrder) <- c(\n  \"All critics rating\", \"Top critics rating\", \"Audience rating\", \n  \"All critics score\", \"Top critics score\", \"Audience score\", \n  \"No. all critics reviews\", \"No. top critics reviews\", \"No. audience ratings\", \n  \"No. all critics fresh\", \"No. top critics fresh\", \n  \"No. all critics fresh\", \"No. all critics rotten\", \"Meta score\"\n)\npng(\"www/heatmapOrder.png\", width = 1200, height = 500)\npushViewport(plotViewport(margins = c(6, 1, 1, 8), \n                          xscale = c(0.5, nrow(colMatOrder) + 0.5), \n                          yscale = c(0.5, ncol(colMatOrder) + 0.5)))\nfor (i in 1:nrow(colMatOrder)) {\n  for (j in 1:ncol(colMatOrder)) {\n    x <- i\n    y <- j\n    grid.rect(x = x, y = y, width = 1, height = 1, default.units = \"native\", \n              gp = gpar(col = NA, fill = colMatOrder[i, j]))\n  }\n}\ngrid.text(label = colnames(colMatOrder), \n          y = unit(1:ncol(colMatOrder), \"native\"), \n          x = unit(1, \"npc\"), just = \"left\")\ncolVecRed <- colorRampPalette(c(\"seashell\", \"red\"))(10)\ncolVecBlue <- colorRampPalette(c(\"seashell\", \"blue\"))(10)\ngrid.rect(y = rep(-1, 10), x = 1:10, width = 1, height = 1, \n          default.units = \"line\", gp = gpar(fill = colVecRed))\ngrid.rect(y = rep(-2, 10), x = 1:10, width = 1, height = 1, \n          default.units = \"line\", gp = gpar(fill = colVecBlue))\ngrid.text(seq(from = 0.1, to = 0.9, by = 0.1), rot = -90, just = \"left\", \n          x = rep(1:9 + 0.5), y = rep(-3, 9), default.units = \"line\")\npopViewport()\ndev.off()\n",
+    "created" : 1489816706508.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3640128180",
+    "id" : "2A8F1616",
+    "lastKnownWriteTime" : 1489819561,
+    "last_content_update" : 1489819561317,
+    "path" : "~/Google Drive/Projects/Active/IMDB_project/plots.R",
+    "project_path" : "plots.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

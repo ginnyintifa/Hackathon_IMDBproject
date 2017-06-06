@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : ".main-header .logo {\n  font-family: Verdana, Arial, sans-serif;\n  font-weight: bold;\n  font-size: 18px;\n}\nbody {\n  font-family: Verdana, Arial, sans-serif;\n}\n.box-title {\n  font-family: Verdana, Arial, sans-serif;\n}\n#smoothCurves: {\n  \"dynamic\": false\n}\n",
+    "created" : 1489824965134.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1034786517",
+    "id" : "B361514E",
+    "lastKnownWriteTime" : 1489825356,
+    "last_content_update" : 1489825356458,
+    "path" : "~/Google Drive/Projects/Active/IMDB_project/www/custom.css",
+    "project_path" : "www/custom.css",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "css"
+}

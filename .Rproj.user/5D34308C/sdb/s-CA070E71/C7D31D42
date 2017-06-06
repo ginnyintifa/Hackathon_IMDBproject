@@ -1,0 +1,18 @@
+{
+    "contents" : "install.packages(\"visNetwork\")\ninstall.packages(\"shiny\")\n",
+    "created" : 1489826688951.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3703423922",
+    "id" : "C7D31D42",
+    "lastKnownWriteTime" : 1489826512,
+    "path" : "/Volumes/SEAGATE/2017_hackathon/IMDB_project/installPackages.R",
+    "project_path" : "installPackages.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

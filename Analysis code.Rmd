@@ -1,0 +1,129 @@
+---
+title: "Untitled"
+author: "Chen Ying"
+date: "17 March 2017"
+output: html_document
+---
+## 
+```{r, eval = FALSE, echo = TRUE}
+setwd(choose.dir())
+movie_table <- read.csv("movies.csv", stringsAsFactors = FALSE, header = TRUE, 
+                        na.strings = c("\\N", "", " "))
+matching_table <- read.csv("movie_actors.csv", stringsAsFactors = FALSE, 
+                           header = TRUE)
+colnames(movie_table)[1] <- "movieID"
+movie_table[,8:20] <- apply(movie_table[,8:20],2,as.numeric)
+## remove NA values
+movie_table <- movie_table[!is.na(movie_table[,8]),]
+## optional remove all 0 values
+tmp <- apply(movie_table[8:20],1,function(a) all(a==0))
+movie_table <- movie_table[!tmp,]
+# ## weighted mean rating of the movies ??
+# library(magrittr)
+# library(dplyr)
+# ## standardize rating, score, number of reviews, such that they are of the same scale
+# col.rating.id <-c(grep("srating",tolower(colnames(movie_table))),grep("erating",tolower(colnames(movie_table)))) 
+# scale.rating <- lapply(1:length(col.rating.id), function(a) scale(movie_table[,col.rating.id[a]]))
+# scale.rating <- do.call('cbind',scale.rating)  
+# 
+# col.score.id <- grep("score",tolower(colnames(movie_table))) 
+# scale.score <- lapply(1:length(col.score.id), function(a) scale(movie_table[,col.score.id[a]]))
+# scale.score <- do.call('cbind',scale.score)
+# 
+# 
+# 
+# col.num.id <- grep("num",tolower(colnames(movie_table)))
+# scale.num <- lapply(1:length(col.num.id),function(a) rank())
+# scale.num <- do.call('cbind',scale.num)
+# colnames(scale.num) <- colnames(movie_table)[col.num.id]
+# scale.num[,grep("rotten",tolower(colnames(scale.num)))]=scale.num[,grep("rotten",tolower(colnames(scale.num)))]*(-1)
+
+
+## 
+N <- nrow(movie_table)
+tmp <- lapply(8:20, function(a) rank(movie_table[,a])/N) 
+tmp <- do.call('cbind',tmp)
+colnames(tmp) <- colnames(movie_table)[8:20]
+tmp[,grep("rotten",tolower(colnames(tmp)))]=tmp[,grep("rotten",tolower(colnames(tmp)))]*(-1)
+
+movie_table$overall.rating <- apply(tmp,1,mean)
+
+## 
+tmp <- movie_table[,c('title','overall.rating')]
+write.csv(tmp,'any.csv')
+## weighted mean rating of actors based on the movies
+
+
+data <- merge(moving_table,matching_table, by = 'movieID')
+
+
+
+```
+
+
+
+## social network analysis
+
+store edge list
+```{r, eval = FALSE, echo = TRUE}
+library(magrittr)
+library(dplyr)
+library(igraph)
+dat <- data.frame(m = rep(1:4,each = 3), a = c(c(1,2,3),c(1,3,4),c(2,5,6),c(5,6,7)))
+
+edges <- dat %>% merge(.,.,by='m',allow.cartesian = TRUE) %>%
+        filter(a.x != a.y) %>%
+        "["(2:3) %>%
+         t() %>% matrix(.,1,nrow(dat)*2*2)
+
+g = graph(edges, directed = FALSE)
+g <- simplify(g)
+## Attributes
+str(g,v=TRUE)
+vertex_attr_names(g)
+V(g)$name
+
+V(g)$label # assign actor names to it
+V(g)$color # assign by there classification group: famous or hidden gems or others
+V(g)$noofgoodqualitymovies # assign number of good quality movies
+V(g)$noofmovies # assign number of movies to it
+  
+E(g)$weight ## assign rating values to it
+
+plot(g,
+     vertex.label="",vertex.size=0.5,
+     edge.arrow.size=0.2, edge.width=2*E(g)$weight)
+
+
+## degree
+library(actuar)
+d = degree(g)
+nnd = graph.knn(g)$knn
+plot(d,nnd,log="xy")
+
+## degree correlation
+nnd = knn(g)$knnk
+plot(1:length(nnd),nnd)
+
+es = ends(g,E(g))
+x = ego_size(g,1,es[,1])
+y = ego_size(g,1,es[,2])
+
+cor(x,y)
+cor(log(x),log(y))
+## postive correlation suggests 
+
+## clustering of themseleves
+G.fg = cluster_fast_greedy(g)
+G.fg
+membership(G.fg)
+V(g)$color = membership(G.fg)
+# V(karate)$shape = c("square","circle","circle")[membership(karate.fg)]
+# V(karate)$size = c(18,18,13)[membership(karate.fg)]
+plot(g)
+
+##
+
+##
+```
+

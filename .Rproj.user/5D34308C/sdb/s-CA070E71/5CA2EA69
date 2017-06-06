@@ -1,0 +1,17 @@
+{
+    "contents" : "library(shiny)\nlibrary(visNetwork)\n\nshinyUI(navbarPage(\n  tags$strong(\"Movies\"),\n  tabPanel(\n    strong(\"About the data\"), \n    mainPanel(\n      fluidRow(\n        h2(\"Our study plan\"),\n        HTML(\"<div><img src='new_rotten.pdf' width='1000px'/></div>\")\n      )\n    )\n  ), \n  tabPanel(\n    strong(\"Our scores\"), \n    mainPanel(\n      h2(\"Our meta score for movies\"),\n      HTML(\"<img src='heatMapOrder.png'/>\"), \n      fluidRow(\n        column(\n          10, \n          h2(\"Our score for actors\"), \n          plotOutput(\"actorScore\", width = \"700px\", height = \"500px\")\n        ), \n        column(\n          2,\n          HTML(\"<img src='Gustav_Frolich.jpeg'/>\"), \n          HTML(\"<img src='samuel_jackson.jpeg'/>\"), \n          HTML(\"<img src='joyce_tailer.jpeg'/>\")\n        )\n      )\n    )\n  ), \n  tabPanel(\n    strong(\"Network\"), \n    mainPanel(\n      h2(\"Network of actors\"), \n      visNetworkOutput(\"plotNetwork\", width = \"100%\", height = \"800px\")\n    )\n  )\n))\n  \n",
+    "created" : 1489826547530.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3538526192",
+    "id" : "5CA2EA69",
+    "lastKnownWriteTime" : 1489828462,
+    "path" : "/Volumes/SEAGATE/2017_hackathon/IMDB_project/ui.R",
+    "project_path" : "ui.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

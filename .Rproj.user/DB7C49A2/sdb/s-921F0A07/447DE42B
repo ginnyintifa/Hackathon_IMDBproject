@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "library(shiny)\nlibrary(visNetwork)\n\nfunction(input, output) {\n  actors <- read.csv(\"www/actor_score.csv\", header = TRUE, \n                     stringsAsFactors = FALSE)[, -1]\n  actor_edges <- read.csv(\"www/edges_movies.csv\", header = TRUE, \n                          stringsAsFactors = FALSE)[, -1]\n  id <- sort(unique(c(actor_edges$actorIDFrom, actor_edges$actorIDTo)))\n  ae <- data.frame(from = factor(actor_edges$actorID, levels = id),\n                   to = factor(actor_edges$actorIDTo, levels = id))\n  actor_nodes <- actors[actors$actorID %in%\n                          c(actor_edges$actorIDFrom, actor_edges$actorIDTo), ]\n  an <- data.frame(id = factor(actor_nodes$actorID, levels = id),\n                   label = actor_nodes$actorName, \n                   score = actor_nodes$actor.movieNO)\n  an$type <- sapply(an$id, function(id) {\n    actor_edges$topquality[which(actor_edges$actorID == id)][1]\n  })\n  \n  output$actorScore <- renderPlot({\n    plot(x = actors$actor.movieNO, y = actors$actor.rating, pch = 20, \n         xlab = \"Number of movies an actor is in\", \n         ylab = \"Meta score for actors\", cex = 2, \n         col = adjustcolor(\"steelblue\", alpha.f = 0.5))\n  })\n  output$plotNetwork <- renderVisNetwork({\n    an$shape <- \"dot\"\n    an$shadow <- TRUE # Nodes will drop shadow\n    an$color.backgroud <- c(\"blue\", \"orange\")[an$type]\n    an$size <- actor_nodes$actor.rating * 10\n    # an$title <- an$score\n    an$title <- an$label\n    an$borderWidth <- 2 # Node border width\n    \n    visNetwork(an, ae, width = \"100%\", height = \"1000px\", stabilization = TRUE)\n  })\n}\n",
+    "created" : 1489825421240.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4150956554",
+    "id" : "447DE42B",
+    "lastKnownWriteTime" : 1489825735,
+    "last_content_update" : 1489825735578,
+    "path" : "~/Google Drive/Projects/Active/IMDB_project/server.R",
+    "project_path" : "server.R",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

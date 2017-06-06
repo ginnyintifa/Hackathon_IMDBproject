@@ -1,0 +1,14 @@
+.main-header .logo {
+  font-family: Verdana, Arial, sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+}
+body {
+  font-family: Verdana, Arial, sans-serif;
+}
+.box-title {
+  font-family: Verdana, Arial, sans-serif;
+}
+#smoothCurves: {
+  "dynamic": false
+}
